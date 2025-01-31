@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('admin/', admin.site.urls),
 ]
-#handler404 = 'home.views.handler404'
+handler404 = 'home.views.handler404'
+LOGIN_REDIRECT_URL = "/"

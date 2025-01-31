@@ -11,7 +11,7 @@
 {% block content %}
 <script src="{% static 'login.js' %}"></script>
 <div class="login-container">
-    <form action="/process_login" method="post">
+    <form method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="email">Email:</label>
