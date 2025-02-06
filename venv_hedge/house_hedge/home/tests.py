@@ -6,6 +6,9 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 
+class ProcessLogigTests(TestCase):
+    def test_login(self):
+        print("test...")
 class UsersManagersTests(TestCase):
 
     def test_create_user(self):

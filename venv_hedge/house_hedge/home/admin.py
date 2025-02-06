@@ -1,10 +1,15 @@
 from django.contrib import admin
 from .models import Member
 from django.contrib.auth.admin import UserAdmin
+from .forms import MemberCreationForm, MemberChangeForm
 
 # Register your models here.
 
 class MemberAdmin(UserAdmin):
+    # Set the forms for a member
+    add_form = MemberCreationForm
+    form = MemberChangeForm
+
     # Fields to display in the list view
     list_display = ('email', 'phone', 'is_staff', 'is_superuser')
     
