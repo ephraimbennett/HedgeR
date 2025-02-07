@@ -24,6 +24,13 @@
         <div class="form-group">
             <button type="submit">Send</button>
         </div>
+
+        <!-- Display error message if authentication fails -->
+        {% if error %}
+            <div class="error-message" style="color: red;">
+                {{ error }}
+            </div>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

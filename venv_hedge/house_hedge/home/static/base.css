@@ -71,3 +71,9 @@ footer {
     font-size: 14px;
     color: #bbb;
 }
+
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}

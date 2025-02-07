@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 
 def home(request):
     return render(request, "home.html")
@@ -20,6 +21,13 @@ def login_user(request):
         template = loader.get_template('login.html')
         return render(request, "login.html")
 
+def logout_user(request):
+    if request.method == 'POST':
+        logout(request)
+        data = {
+            'message': 'Successful Logout'
+        }
+        return JsonResponse(data)
 
 def handler404(request, error):
     print("hah")
