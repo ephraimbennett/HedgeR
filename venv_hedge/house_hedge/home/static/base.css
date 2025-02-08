@@ -56,6 +56,7 @@ header {
 .nav-center a:hover {
     background-color: #555; /* Changed from background */
     border-radius: 5px;
+    cursor:pointer;
 }
 
 /* Main content */
@@ -70,10 +71,4 @@ footer {
     padding: 10px;
     font-size: 14px;
     color: #bbb;
-}
-
-
-a.disabled {
-    pointer-events: none;
-    cursor: default;
 }

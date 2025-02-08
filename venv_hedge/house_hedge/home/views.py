@@ -4,6 +4,8 @@ from django.template import loader
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 
+from .forms import MemberCreationForm
+
 def home(request):
     return render(request, "home.html")
 
@@ -28,6 +30,19 @@ def logout_user(request):
             'message': 'Successful Logout'
         }
         return JsonResponse(data)
+    
+def register(request):
+    if request.method == 'POST':
+        form = MemberCreationForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        else:
+            errors = {}
+            print(form.errors.as_text())
+            return render(request, 'register.html', {'errors': form.errors.as_text()})
+    return render(request, "register.html")
 
 def handler404(request, error):
     print("hah")
