@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home'
+    'home',
+    'finder'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # New custom user class is member
 AUTH_USER_MODEL = "home.Member"
+
+# set the login url (for accessing restricted pages when not logged in)
+LOGIN_URL = '/login'
