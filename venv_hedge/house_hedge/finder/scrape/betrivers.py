@@ -1,12 +1,12 @@
 from playwright.sync_api import sync_playwright
 import re
+import json
 
-def scrape_betrivers_ncaab():
+def scrape_betrivers_domestic(url, sport):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)  # Use `False` to see browser UI
         page = browser.new_page()
-        page.goto("https://mi.betrivers.com/?page=sportsbook&group=1000093652&type=matches")
-        # listview-group-1000093654-events-container
+        page.goto(url)
 
         # still use selectors for this for now.
         page.wait_for_selector("article[data-testid^='listview-group']")
@@ -26,7 +26,7 @@ def scrape_betrivers_ncaab():
 
         for event in events:
             try:
-                json_data.append(process_event(event))
+                json_data.append(process_event(event, sport))
             except Exception as e:
                 print(e)
                 continue
@@ -37,17 +37,27 @@ def scrape_betrivers_ncaab():
 
         return json_data
         
-def process_event(event):
+def process_event(event, sport):
     event.scroll_into_view_if_needed()
     # the title will be the aria-label of the first child div
     title = event.locator(">*").first.get_attribute("aria-label")
 
     print(title)
 
+
     # this section of code gets each side from the title, and the time
-    teams, time = title.split(",", 1)
-    sides = teams.split("@")
-    sides = [item.strip() for item in sides]
+    # if it's a UFC event, we need to handle the title differently
+    if sport == 'UFC':
+        first, second = title.split('-', 1)
+        second = second.split(',')
+        sides = [first]
+        sides.append(",".join(second[:-2]))
+        time = ",".join(second[-2:])
+        sides = [item.strip() for item in sides]
+    else:
+        teams, time = title.split(",", 1)
+        sides = teams.split("@")
+        sides = [item.strip() for item in sides]
 
     
 
@@ -81,6 +91,12 @@ def process_event(event):
 
         # now, the moneyline
         if text and text.find("Moneyline") != -1:
+            # process differently for ufc because of the nameing 
+            if sport == 'UFC':
+                side, odds = process_aria_ufc(text, sides)
+                moneyline[side] = odds
+                continue
+
             # the aria text for the moneyline should be formatted like this:
             # Moneyline, Northwestern State at +255
 
@@ -119,4 +135,14 @@ def process_event(event):
 
     return data
 
-print(scrape_betrivers_ncaab())
+def process_aria_ufc(text, sides):
+    odds = text.split()[-1]
+    if text.find(sides[0]) != -1:
+        side = sides[0]
+    else:
+        side = sides[1]
+    return [side, odds]
+
+
+url = "https://mi.betrivers.com/?page=sportsbook&l=RiversPittsburgh&group=1000093652&type=matches"
+print(json.dumps(scrape_betrivers_domestic(url, 'NCAAW'), sort_keys=True, indent=4))
