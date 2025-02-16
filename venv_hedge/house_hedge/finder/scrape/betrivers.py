@@ -144,5 +144,5 @@ def process_aria_ufc(text, sides):
     return [side, odds]
 
 
-url = "https://mi.betrivers.com/?page=sportsbook&l=RiversPittsburgh&group=1000093652&type=matches"
+url = "https://mi.betrivers.com/?page=sportsbook&group=1000093654&type=matches"
 print(json.dumps(scrape_betrivers_domestic(url, 'NCAAW'), sort_keys=True, indent=4))
