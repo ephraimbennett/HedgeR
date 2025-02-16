@@ -32,6 +32,7 @@ def scrape_fanduel_domestic(url):
             aria_values.append(button.get_attribute("aria-label")) # store the aria_labels
         for val in aria_values:
             # each value is split into multiple sections by a comma to determine data
+            val = val.lower()
             sections = val.split(',')
 
             # this button label would not be for an actual bet
@@ -72,5 +73,8 @@ def scrape_fanduel_int(url):
 
         print(page.title())  # Print page title as a test
         browser.close()
+url = "https://sportsbook.fanduel.com/navigation/ncaab"
+data = scrape_fanduel_domestic(url)
 
-print(json.dumps(scrape_fanduel_domestic("https://sportsbook.fanduel.com/navigation/ncaab"), indent=4))
+with open('data/fanduel.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)

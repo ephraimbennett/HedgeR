@@ -22,8 +22,8 @@ def scrape_draftkings_domestic(url):
             r1 = rows[i]
             r2 = rows[i + 1]
 
-            sides = [r1.locator('div.event-cell__name-text').text_content(), 
-                     r2.locator('div.event-cell__name-text').text_content()]
+            sides = [r1.locator('div.event-cell__name-text').text_content().lower(), 
+                     r2.locator('div.event-cell__name-text').text_content().lower()]
             title = sides[0] + ' @ ' + sides[1]
 
             moneyline = {}
@@ -39,7 +39,7 @@ def scrape_draftkings_domestic(url):
                 spans = tds[i][0].locator('span').all()
                 if len(spans) < 1: # handles cases where the td is empty
                     break
-                spread[sides[i]] = [span.text_content() for span in spans]
+                spread[sides[i]] = [span.text_content().lower() for span in spans]
             
             # get the total
             # there should be four spans. First is over/under, second is a break, 3rd is line fourth is odds
@@ -48,7 +48,7 @@ def scrape_draftkings_domestic(url):
                 if len(spans) < 1:
                     break
                 label = 'over' if spans[0].text_content() == 'O' else 'under'
-                total[label] = [spans[2].text_content(), spans[3].text_content()]
+                total[label] = [spans[2].text_content().lower(), spans[3].text_content().lower()]
             
             # get the moneyline
             # should be just one spread with the odds
@@ -56,7 +56,7 @@ def scrape_draftkings_domestic(url):
                 spans = tds[i][2].locator('span').all()
                 if len(spans) < 1:
                     break
-                moneyline[sides[i]] = spans[0].text_content()
+                moneyline[sides[i]] = spans[0].text_content().lower()
 
             events[title] = {'spread' : spread, 'total': total, 'moneyline' : moneyline}
             #print(moneyline)
@@ -66,7 +66,9 @@ def scrape_draftkings_domestic(url):
 
         return events
 
-url = "https://sportsbook.draftkings.com/leagues/baseball/ncaa-baseball"
+url = "https://sportsbook.draftkings.com/leagues/basketball/ncaab"
 
 data = scrape_draftkings_domestic(url)
-print(json.dumps(data, indent=4, ensure_ascii=False))
+
+with open('data/draftkings.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)

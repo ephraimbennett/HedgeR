@@ -22,11 +22,12 @@ def scrape_betrivers_domestic(url, sport):
         # grab the eveents using locators
         events = articles = page.locator("article[data-testid^='listview-group']").all()
         
-        json_data = []
+        json_data = {}
 
         for event in events:
             try:
-                json_data.append(process_event(event, sport))
+                title, data = process_event(event, sport)
+                json_data[title] = data
             except Exception as e:
                 print(e)
                 continue
@@ -70,8 +71,11 @@ def process_event(event, sport):
     buttons = event.locator("button").all()
     for button in buttons:
         text = button.get_attribute("aria-label")
+        if text is None:
+            continue
+        text = text.lower()
         # first, point spread
-        if text and text.find("Point Spread") != -1:
+        if text.find("Point Spread") != -1:
             # the aria text of the spread is formatted like this:
             # Point Spread, (9) Michigan State -11.5 at -108
 
@@ -90,7 +94,7 @@ def process_event(event, sport):
             spread[side] = [line, odds]
 
         # now, the moneyline
-        if text and text.find("Moneyline") != -1:
+        if text.find("Moneyline") != -1:
             # process differently for ufc because of the nameing 
             if sport == 'UFC':
                 side, odds = process_aria_ufc(text, sides)
@@ -114,7 +118,7 @@ def process_event(event, sport):
             moneyline[side] = odds
         
         # finally, the total points
-        if text and text.find("Total Points") != -1:
+        if text.find("Total Points") != -1:
             # the format for this aria text should be like this:
             # Total Points, over 146 at -124
             
@@ -131,9 +135,9 @@ def process_event(event, sport):
             # odds will be the last word
             odds = second_words[-1]
             total[type] = [line, odds]
-    data = {'title': title, 'sides': sides, 'moneyline': moneyline, 'spread': spread, 'total': total, 'time': time}
+    data = {'sides': sides, 'moneyline': moneyline, 'spread': spread, 'total': total, 'time': time}
 
-    return data
+    return title, data
 
 def process_aria_ufc(text, sides):
     odds = text.split()[-1]
@@ -145,4 +149,7 @@ def process_aria_ufc(text, sides):
 
 
 url = "https://mi.betrivers.com/?page=sportsbook&group=1000093654&type=matches"
-print(json.dumps(scrape_betrivers_domestic(url, 'NCAAW'), sort_keys=True, indent=4))
+data = scrape_betrivers_domestic(url, 'NCAAW')
+
+with open('data/betrivers.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
