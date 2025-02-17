@@ -2,53 +2,18 @@
     "louisville @ notre dame": {
         "spread": {
             "louisville": [
-                "-8.5",
-                "-115"
+                "-14.5",
+                "-140"
             ],
             "notre dame": [
-                "+8.5",
-                "-115"
+                "+14.5",
+                "+105"
             ]
         },
-        "total": {
-            "over": [
-                "134.5",
-                "-115"
-            ],
-            "under": [
-                "134.5",
-                "-115"
-            ]
-        },
+        "total": {},
         "moneyline": {
-            "louisville": "-1000",
-            "notre dame": "+550"
-        }
-    },
-    "valparaiso @ evansville": {
-        "spread": {
-            "valparaiso": [
-                "+4.5",
-                "-125"
-            ],
-            "evansville": [
-                "-4.5",
-                "-105"
-            ]
-        },
-        "total": {
-            "over": [
-                "152.5",
-                "-105"
-            ],
-            "under": [
-                "152.5",
-                "-125"
-            ]
-        },
-        "moneyline": {
-            "valparaiso": "+190",
-            "evansville": "-250"
+            "louisville": "",
+            "notre dame": ""
         }
     },
     "md eastern shore @ howard": {
@@ -75,32 +40,6 @@
         "moneyline": {
             "md eastern shore": "+650",
             "howard": "-1000"
-        }
-    },
-    "prairie view a and m @ grambling state": {
-        "spread": {
-            "prairie view a and m": [
-                "+7.5",
-                "-118"
-            ],
-            "grambling state": [
-                "-7.5",
-                "-102"
-            ]
-        },
-        "total": {
-            "over": [
-                "142.5",
-                "-110"
-            ],
-            "under": [
-                "142.5",
-                "-110"
-            ]
-        },
-        "moneyline": {
-            "prairie view a and m": "+230",
-            "grambling state": "-295"
         }
     },
     "alabama am @ arkansas pine bluff": {
@@ -158,12 +97,12 @@
     "alabama state @ mississippi valley st": {
         "spread": {
             "alabama state": [
-                "-18.5",
-                "-105"
+                "-17.5",
+                "-110"
             ],
             "mississippi valley st": [
-                "+18.5",
-                "-115"
+                "+17.5",
+                "-110"
             ]
         },
         "total": {
@@ -177,8 +116,8 @@
             ]
         },
         "moneyline": {
-            "alabama state": "-3000",
-            "mississippi valley st": "+1200"
+            "alabama state": "-2500",
+            "mississippi valley st": "+1150"
         }
     },
     "jackson st @ bethune cookman": {
@@ -259,6 +198,32 @@
             "bucknell": "-235"
         }
     },
+    "prairie view a and m @ grambling state": {
+        "spread": {
+            "prairie view a and m": [
+                "+6.5",
+                "-105"
+            ],
+            "grambling state": [
+                "-6.5",
+                "-115"
+            ]
+        },
+        "total": {
+            "over": [
+                "142.5",
+                "-110"
+            ],
+            "under": [
+                "142.5",
+                "-110"
+            ]
+        },
+        "moneyline": {
+            "prairie view a and m": "+230",
+            "grambling state": "-295"
+        }
+    },
     "lamar @ n'western st": {
         "spread": {
             "lamar": [
@@ -289,11 +254,11 @@
         "spread": {
             "nicholls state": [
                 "-8.5",
-                "-115"
+                "-110"
             ],
             "new orleans u": [
                 "+8.5",
-                "-105"
+                "-110"
             ]
         },
         "total": {
@@ -324,12 +289,12 @@
         },
         "total": {
             "over": [
-                "139.5",
-                "-105"
+                "138.5",
+                "-115"
             ],
             "under": [
-                "139.5",
-                "-115"
+                "138.5",
+                "-105"
             ]
         },
         "moneyline": {
@@ -429,11 +394,11 @@
         "total": {
             "over": [
                 "130.5",
-                "-105"
+                "-110"
             ],
             "under": [
                 "130.5",
-                "-115"
+                "-110"
             ]
         },
         "moneyline": {

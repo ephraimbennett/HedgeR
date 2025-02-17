@@ -35,7 +35,10 @@ def scrape_betmgm_domestic(url):
             total = {}
             options = groups[1].locator('ms-option').all()
             for i in range(len(options)):
+                
                 words = options[i].text_content().split()
+                if len(words) < 2:
+                    continue
                 label = 'over' if words[0] == 'O' else 'under'
                 total[label] = words[1:]
 
