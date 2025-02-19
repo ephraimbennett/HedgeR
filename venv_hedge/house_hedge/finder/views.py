@@ -39,8 +39,8 @@ def bonus_bets(request):
 
     bonus_size = request.GET.get('amount')
     if bonus_size is not None:
-        #BonusBet.objects.all().delete()
-        #update_bonus_bets()
+        BonusBet.objects.all().delete()
+        update_bonus_bets()
         bets = BonusBet.objects.all().order_by("-profit_index")[:int(request.GET.get('limit'))]
         for bet in bets:
             bet.profit_index *= float(bonus_size)

@@ -14,12 +14,12 @@ def update_bonus_bets():
     for item in sports_names:
         keys.append(item['key'])
 
-    sport_key = "basketball_ncaab"
-    url_odds = f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds?regions=us&oddsFormat=american&apiKey={key_api}"
-
-    response = requests.get(url=url_odds)
-    data = response.json()
-
+    keys = ["baseball_ncaa", "basketball_nba", "basketball_wncaab"]
+    data = []
+    for key in keys:
+        url_odds = f"https://api.the-odds-api.com/v4/sports/{key}/odds?regions=us&oddsFormat=american&apiKey={key_api}"
+        response = requests.get(url=url_odds)
+        data.extend(response.json())
     bets = bonus_bet_calc(data)
 
     for bet in bets:

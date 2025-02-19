@@ -4,5 +4,5 @@ from .services import update_bonus_bets
 # Create your tests here.
 
 class CalculateTestCase(TestCase):
-    def from_services(self):
+    def test_from_services(self):
         update_bonus_bets()

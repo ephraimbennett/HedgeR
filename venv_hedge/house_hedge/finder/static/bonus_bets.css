@@ -1,4 +1,4 @@
-/* Style the bonus bets container */
+/* General Styling */
 .bonus-bets-container {
     width: 80%;
     margin: 20px auto;
@@ -27,9 +27,6 @@
     background-color: #333;
     color: white;
     width: 100px;
-}
-
-.bonus-bet-input input[type="number"] {
     text-align: center;
 }
 
@@ -53,10 +50,13 @@
     border-collapse: collapse;
 }
 
-.bonus-bets-table th, .bonus-bets-table td {
-    padding: 10px;
+.bonus-bets-table th, 
+.bonus-bets-table td {
+    padding: 15px;  /* Increased padding for more row height */
     border-bottom: 1px solid #444;
     text-align: left;
+    white-space: normal; /* Allow text wrapping */
+    word-break: break-word; /* Ensure long text wraps */
 }
 
 .bonus-bets-table th {
@@ -69,4 +69,20 @@
 
 .bonus-bets-table tr:hover {
     background-color: #333;
+}
+
+/* Hedge Bet Styling */
+.hedge-bet-container {
+    display: flex;
+    flex-direction: column; /* Stack bookie & amount on separate lines */
+}
+
+.hedge-bet-container span {
+    display: block;
+}
+
+/* Profit Column Styling */
+.bonus-bets-table td:last-child {
+    font-weight: bold;
+    color: #4CAF50; /* Green for profit */
 }

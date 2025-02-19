@@ -34,10 +34,16 @@
             <tbody id="bonus-bets-body">
                 {% for bet in bets %}  <!-- Default limit to 50 -->
                 <tr>
-                    <td><span>{{ bet.title }}</span></td>
+                    <td>
+                        <span>{{ bet.title }}</span> <br>
+                        <span>Moneyline</span>
+                    </td>
                     <td>Not Available</td>
                     <td>{{ bet.bonus_bet }} +{{ bet.bonus_odds }}</td>
-                    <td>{{ bet.hedge_bet }} {{ bet.hedge_odds }} ${{ bet.hedge_index|floatformat:2 }}</td>
+                    <td>
+                        <span>{{ bet.hedge_bet }} {{ bet.hedge_odds }}</span> <br>
+                        <span>${{ bet.hedge_index|floatformat:2 }}</span>
+                    </td>
                     <td>${{ bet.profit_index|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
