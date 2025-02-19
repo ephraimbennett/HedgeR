@@ -7,13 +7,14 @@ class Settings(models.Model):
     state = models.CharField(max_length=2, null=False, default="XX")
 
 class BonusBet(models.Model):
-    title = models.TextField
+    title = models.TextField(null=True)
 
     # the bonus bet
-    bonus_bet = models.TextField
-    bonus_odds = models.IntegerField
+    bonus_bet = models.TextField(null=True)
+    bonus_odds = models.IntegerField(null=True)
 
-    hedge_bet = models.TextField
-    hedge_odds = models.IntegerField
+    hedge_bet = models.TextField(null=True)
+    hedge_odds = models.IntegerField(null=True)
+    hedge_index = models.FloatField(null=True)
 
-    profit_index = models.FloatField
+    profit_index = models.FloatField(null=True)

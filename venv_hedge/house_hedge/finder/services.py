@@ -20,11 +20,12 @@ def update_bonus_bets():
     response = requests.get(url=url_odds)
     data = response.json()
 
-    bets = bonus_bet_calc()
+    bets = bonus_bet_calc(data)
 
     for bet in bets:
         bet_model = BonusBet(title=bet['title'], bonus_bet=bet['bonus_bet'][0], hedge_bet=bet['hedge_bet'][0])
         bet_model.bonus_odds = bet['bonus_bet'][1]
-        bet_model.hedge_odds = bet['hedge_odds'][0]
+        bet_model.hedge_odds = bet['hedge_bet'][1]
+        bet_model.hedge_index = bet['hedge_bet'][2]
         bet_model.profit_index = bet['profit_index']
         bet_model.save()

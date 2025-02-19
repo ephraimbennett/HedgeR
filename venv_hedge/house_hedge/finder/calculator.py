@@ -19,7 +19,9 @@ def bonus_bet_calc(data):
     for event in data:
         biggest_plus = 0
         bet_bookie = hedge_bookie = ''
-        largest_minus = -9999
+        largest_minus = -99999
+        if len(event['bookmakers']) == 0:
+            continue
         for bookie in event['bookmakers']:
             for outcome in bookie['markets'][0]['outcomes']:
                 if outcome['price'] > 0: # underdog
@@ -29,15 +31,17 @@ def bonus_bet_calc(data):
                 else:
                     if outcome['price'] > largest_minus:
                         largest_minus = outcome['price']
-                        hedge_bookie = bookie['title']
-        
-        bonus_bet = {'bonus_bet': [bet_bookie, biggest_plus], 'hedge_bet': [hedge_bookie, largest_minus]}
+                        hedge_bookie = bookie['title']        
         
         # calculate the profit index ~ (Ob - 1) x ((Oh - 1) / Oh)
         odd_b = 1 + biggest_plus / 100
         odd_h = 1 + (100 / abs(largest_minus))
         profit_idx = (odd_b - 1) * ((odd_h - 1) / odd_h)
         print(odd_b, odd_h)
+        
+
+        hedge_index = (odd_b - 1) / odd_h
+        bonus_bet = {'bonus_bet': [bet_bookie, biggest_plus], 'hedge_bet': [hedge_bookie, largest_minus, hedge_index]}
         bonus_bet['profit_index'] = profit_idx
 
         bonus_bet['title'] = event["away_team"] + " @ " + event["home_team"]

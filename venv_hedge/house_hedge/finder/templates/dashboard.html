@@ -8,6 +8,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'dashboard.css' %}">
     <script src="{% static 'dashboard.js' %}" defer></script>
+
+    {% block extra_style %}
+    {% endblock %}
 </head>
 <body>
 
@@ -16,7 +19,7 @@
         <button class="close-menu" onclick="toggleMenu()">✖</button>
         <a href="/settings">⚙️ Settings</a>
         <a href="/">Profit Boost</a>
-        <a href="/">Bonus Bet</a>
+        <a href="/bonus_bets">Bonus Bet</a>
         <a href="/">Site Credit</a>
         <a href="/">Second Chance Bet</a>
         <a href="/">Qualifying Bet</a>
@@ -32,16 +35,17 @@
             <p>Potential Profit: $<span id="potential-profit">{{ potential_profit }}</span></p>
             <p>State: <span id="user-state"> {{settings.state}}</span></p>
         </div>
-
+        {% block main %}
         <!-- Grid of Betting Options -->
         <div class="dashboard-grid">
             <button onclick="window.location.href='/'">Profit Boost</button>
-            <button onclick="window.location.href='/'">Bonus Bet</button>
+            <button onclick="window.location.href='/bonus_bets'">Bonus Bet</button>
             <button onclick="window.location.href='/'">Site Credit</button>
             <button onclick="window.location.href='/'">Second Chance Bet</button>
             <button onclick="window.location.href='/'">Qualifying Bet</button>
             <button onclick="window.location.href='/'">Arbitrage</button>
         </div>
+        {% endblock %}
     </div>
 
 </body>
