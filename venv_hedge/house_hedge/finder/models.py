@@ -18,3 +18,17 @@ class BonusBet(models.Model):
     hedge_index = models.FloatField(null=True)
 
     profit_index = models.FloatField(null=True)
+
+class SecondBet(models.Model):
+    title = models.TextField(null=True)
+
+    # the bonus bet
+    bonus_bet = models.TextField(null=True)
+    bonus_odds = models.IntegerField(null=True)
+
+    hedge_bet = models.TextField(null=True)
+    hedge_odds = models.IntegerField(null=True)
+
+    hedge_index = models.FloatField(null=True)
+
+    profit_index = models.FloatField(null=True)
