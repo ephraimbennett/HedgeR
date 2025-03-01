@@ -55,28 +55,36 @@ def second_chance(request):
 
     second_size = request.GET.get('amount')
     if second_size is not None:
-        #second_size = float(second_size)
         #SecondBet.objects.all().delete()
-        update_bets()
-        return_rate = float(request.GET.get('return')) / 100.0
-        bets = SecondBet.objects.all().order_by("-profit_index")[:int(request.GET.get("limit"))]
-        print(bets[0].profit_index)
+        #update_bets()
+
+        # grab the S and r from the client.
+        S = float(second_size)
+        r = float(request.GET.get('return')) / 100.0
+
+        # we want to grab the first 500 bets, because we don't know how profitable they really are yet. 
+        bets = SecondBet.objects.all().order_by("-profit_index")[:500]
+        bet_list = []
         for bet in bets:
-            # we need to calculate profit and hedge from the ground up.
-            # first profit
-            # P = S * (Ob - (Ob + 1 - r) / (Oh + 1))
-            odd_b = bet.bonus_odds / 100
-            odd_h = 100 / abs(bet.hedge_odds)
+            print(bet.profit_index)
 
-            profit = second_size * (odd_b - (odd_b + 1 - return_rate) / (odd_h + 1))
+
+            # H = (Ob * S - S * r) / Oh,
+            # P = Ob * S - S - (Ob * S - S * r) / Oh
+            odd_h = 1 + 100 / abs(bet.hedge_odds)
+            odd_b = 1 + bet.bonus_odds / 100
+            hedge = (odd_b * S - S * r) / odd_h
+            profit = odd_b * S - S - hedge
+
             bet.profit_index = profit
-
-            # now, hedge
-            # S * ((Ob + 1 - r) / (Oh + 1))
-            hedge = second_size * ((odd_b + 1 - return_rate) / (odd_h + 1))
             bet.hedge_index = hedge
-        #bets.order_by("-profit_index")
-        return render(request, 'second_chance.html', {'bets' : bets, 'settings': user_settings})
+            bet_list.append(bet)
+             
+        # sort the bets by how much profit and then return the amount wanted to the user
+        bet_list.sort(key = lambda bet : bet.profit_index, reverse=True)
+        bet_list = bet_list[:int(request.GET.get('limit'))]
+
+        return render(request, 'second_chance.html', {'bets' : bet_list, 'settings': user_settings})
 
     return render(request, 'second_chance.html', {'settings': user_settings})
 

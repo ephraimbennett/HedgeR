@@ -70,13 +70,11 @@ def bonus_bet_calc(bets):
 def second_chance_calc(bets):
     '''
     Given, ob = second chance odds, oh = hedge odds, S = second chance size, H = hedge size, r = return find profit:
-    P = (S * ob) - H = (H * oh) - S + (S * r), =>
-    H = ((S * ob) + S - Sr) / (oh + 1) = S * ((Ob + 1 - r) / (Oh + 1)), =>
-    P = (S * ob) - ((S * ob) + S - Sr) / (oh + 1), =>
-    P = S * (Ob - (Ob + 1 - r) / (Oh + 1))
+    P = Ob * S - S - H = Oh * H - H - S + S * r ==>
+    H = (Ob * S - S * r) / Oh,
+    P = Ob * S - S - (Ob * S - S * r) / Oh
 
-    The hedge index is: ((Ob + 1 - r) / (Oh + 1))
-    The profit index is: (Ob - (Ob + 1 - r) / (Oh + 1))
+
     '''
     second_bets = []
     for bet in bets:
@@ -84,13 +82,14 @@ def second_chance_calc(bets):
         minus = bet['hedge_bet'][1]
 
 
-        # calculate the profit index ~ (Ob - (Ob + 1 - r) / (Oh + 1)). Use r = 1 for now, then recalc later.
-        odd_b = 1 + plus / 100
-        odd_h = 1 + (100 / abs(minus))
-        profit_idx = (odd_b - (odd_b) / (odd_h + 1))
+        # Calculate the implied odds
+        # this will help
+        implied_b = 100 / (plus + 100)
+        implied_h = minus / (minus + 100)
+        diff = 1 - (implied_b + implied_h)
 
         second_bet = {'bonus_bet': [bet['bonus_bet'][0], plus], 'hedge_bet': [bet['hedge_bet'][0], minus]}
-        second_bet['profit_index'] = profit_idx
+        second_bet['profit_index'] = diff
         second_bet['title'] = bet['title']
         
         second_bets.append(second_bet)
