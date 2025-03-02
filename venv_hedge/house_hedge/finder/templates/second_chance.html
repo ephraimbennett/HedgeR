@@ -19,6 +19,14 @@
         <label for="bets-displayed">Return Rate (%):</label>
         <input type="number" id="return-rate" name="return_rate" min="1" max="100" value="70">
 
+        <label for="bonus-bookmaker"> Bookmaker:</label>
+        <select id="bonus-bookmaker" name="bonus_bookmaker">
+            <option value="">All</option> <!-- Default option -->
+            {% for bookmaker in bookmakers %}
+                <option value="{{ bookmaker.title }}">{{ bookmaker.title }}</option>
+            {% endfor %}
+        </select>
+
         <button id="find-bonus-bets">Find</button>
     </div>
 
@@ -62,6 +70,7 @@
         let amount = document.getElementById("bonus-bet-amount").value;
         let betLimit = document.getElementById("bets-displayed").value;
         let ret = document.getElementById("return-rate").value;
+        let bookmaker = document.getElementById("bonus-bookmaker").value;
 
         if (!amount || amount <= 0) {
             alert("Please enter a valid bonus bet amount.");
@@ -78,8 +87,15 @@
             return;
         }
 
+        if (!bookmaker) {
+            alert("Please select the bookmaker who is hosting the promotion.");
+            return;
+        }
+
+        
+
         // Redirect to backend with bonus bet amount and bet display limit
-        window.location.href = `/second_chance?amount=${amount}&limit=${betLimit}&return=${ret}`;
+        window.location.href = `/second_chance?amount=${amount}&limit=${betLimit}&bookmaker=${bookmaker}&return=${ret}`;
     };
 
 
@@ -98,6 +114,11 @@
             sendAmount();
         }
     });
+    document.getElementById("bonus-bookmaker").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            sendAmount();
+        }
+    });
 
     //this ensures the data inside our input fields don't get reset to their default value on page reload.
     document.addEventListener("DOMContentLoaded", function () {
@@ -105,10 +126,12 @@
         const savedAmount = urlParams.get("amount");
         const savedLimit = urlParams.get("limit");
         const savedReturn = urlParams.get("return");
+        const savedBookmaker = urlParams.get("bookmaker");
 
         if (savedAmount) document.getElementById("bonus-bet-amount").value = savedAmount;
         if (savedLimit) document.getElementById("bets-displayed").value = savedLimit;
         if (savedReturn) document.getElementById("return-rate").value = savedReturn;
+        if (savedBookmaker) document.getElementById("bonus-bookmaker").value = savedBookmaker;
     });
 
 </script>

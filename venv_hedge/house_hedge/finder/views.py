@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Settings, BonusBet, SecondBet
+from .models import Settings, BonusBet, SecondBet, BookMaker
 from .services import update_bets
 
 
@@ -36,34 +36,46 @@ def settings(request):
 @login_required
 def bonus_bets(request):
     user_settings, created = Settings.objects.get_or_create(user=request.user)
+    bookmakers = BookMaker.objects.all()
 
     bonus_size = request.GET.get('amount')
     if bonus_size is not None:
-        #BonusBet.objects.all().delete()
-        #update_bets()
-        bets = BonusBet.objects.all().order_by("-profit_index")[:int(request.GET.get('limit'))]
+        update_bets()
+
+        bm = request.GET.get('bookmaker')
+        if bm != 'Any':
+            bets = BonusBet.objects.filter(bonus_bet__contains=bm).order_by("-profit_index")[:int(request.GET.get('limit'))]
+        else:
+            bets = BonusBet.objects.all().order_by("-profit_index")[:int(request.GET.get('limit'))]
         for bet in bets:
             bet.profit_index *= float(bonus_size)
             bet.hedge_index *= float(bonus_size)
-        return render(request, 'bonus_bets.html', {'bets' : bets, 'settings': user_settings})
 
-    return render(request, 'bonus_bets.html', {'settings': user_settings})
+        
+        vars = {'bets' : bets, 'settings': user_settings, 'bookmakers': bookmakers}
+
+        return render(request, 'bonus_bets.html', vars)
+
+    return render(request, 'bonus_bets.html', {'settings': user_settings, 'bookmakers': bookmakers})
 
 @login_required
 def second_chance(request):
     user_settings, created = Settings.objects.get_or_create(user=request.user)
+    bookmakers = BookMaker.objects.all()
 
     second_size = request.GET.get('amount')
     if second_size is not None:
-        #SecondBet.objects.all().delete()
         #update_bets()
 
         # grab the S and r from the client.
         S = float(second_size)
         r = float(request.GET.get('return')) / 100.0
+        # grab the bookmaker
+        bm = request.GET.get('bookmaker')
+        print(bm.title)
 
         # we want to grab the first 500 bets, because we don't know how profitable they really are yet. 
-        bets = SecondBet.objects.all().order_by("-profit_index")[:500]
+        bets = SecondBet.objects.all().filter(bonus_bet__contains=bm).order_by("-profit_index")[:500]
         bet_list = []
         for bet in bets:
             print(bet.profit_index)
@@ -84,7 +96,10 @@ def second_chance(request):
         bet_list.sort(key = lambda bet : bet.profit_index, reverse=True)
         bet_list = bet_list[:int(request.GET.get('limit'))]
 
-        return render(request, 'second_chance.html', {'bets' : bet_list, 'settings': user_settings})
+        
 
-    return render(request, 'second_chance.html', {'settings': user_settings})
+        vars = {'bets' : bet_list, 'settings': user_settings, 'bookmakers': bookmakers}
+        return render(request, 'second_chance.html', vars)
+
+    return render(request, 'second_chance.html', {'settings': user_settings, 'bookmakers': bookmakers})
 

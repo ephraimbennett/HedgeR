@@ -16,6 +16,14 @@
         <label for="bets-displayed">Bets Displayed:</label>
         <input type="number" id="bets-displayed" name="bets_displayed" min="1" max="200" value="50">
 
+        <label for="bonus-bookmaker">Bonus Bookmaker:</label>
+        <select id="bonus-bookmaker" name="bonus_bookmaker">
+            <option value="" selected>Any</option> <!-- Default option -->
+            {% for bookmaker in bookmakers %}
+                <option value="{{ bookmaker.title }}">{{ bookmaker.title }}</option>
+            {% endfor %}
+        </select>
+
         <button id="find-bonus-bets">Find</button>
     </div>
 
@@ -36,13 +44,16 @@
                 <tr>
                     <td>
                         <span>{{ bet.title }}</span> <br>
-                        <span>Moneyline</span>
+                        <span>{{ bet.market }}</span>
                     </td>
                     <td>Not Available</td>
-                    <td>{{ bet.bonus_bet }} +{{ bet.bonus_odds }}</td>
+                    <td>
+                        <span>{{ bet.bonus_bet }} +{{ bet.bonus_odds }}</span> <br>
+                        <span>{{ bet.bonus_name }}</span>
+                    </td>
                     <td>
                         <span>{{ bet.hedge_bet }} {{ bet.hedge_odds }}</span> <br>
-                        <span>${{ bet.hedge_index|floatformat:2 }}</span>
+                        <span>{{ bet.hedge_name }} ${{ bet.hedge_index|floatformat:2 }}</span>
                     </td>
                     <td>${{ bet.profit_index|floatformat:2 }}</td>
                 </tr>
@@ -58,6 +69,7 @@
     function sendAmount() {
         let amount = document.getElementById("bonus-bet-amount").value;
         let betLimit = document.getElementById("bets-displayed").value;
+        let bookmaker = document.getElementById("bonus-bookmaker").value;
 
         if (!amount || amount <= 0) {
             alert("Please enter a valid bonus bet amount.");
@@ -70,7 +82,7 @@
         }
 
         // Redirect to backend with bonus bet amount and bet display limit
-        window.location.href = `/bonus_bets?amount=${amount}&limit=${betLimit}`;
+        window.location.href = `/bonus_bets?amount=${amount}&limit=${betLimit}&bookmaker=${bookmaker}`;
     };
 
 
@@ -90,14 +102,22 @@
         }
     });
 
+    document.getElementById("bonus-bookmaker").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            sendAmount();
+        }
+    });
+
     //this ensures the data inside our input fields don't get reset to their default value on page reload.
     document.addEventListener("DOMContentLoaded", function () {
         const urlParams = new URLSearchParams(window.location.search);
         const savedAmount = urlParams.get("amount");
         const savedLimit = urlParams.get("limit");
+        const savedBookmaker = urlParams.get("bookmaker");
 
         if (savedAmount) document.getElementById("bonus-bet-amount").value = savedAmount;
         if (savedLimit) document.getElementById("bets-displayed").value = savedLimit;
+        if (savedBookmaker) document.getElementById("bonus-bookmaker").value = savedBookmaker;
     });
 
 </script>

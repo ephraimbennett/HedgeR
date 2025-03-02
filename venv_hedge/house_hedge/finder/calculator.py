@@ -14,23 +14,38 @@ def calculate_all(data):
 def find_best_bets(data):
     bets = []
     for event in data:
+        # info needed for the event
         biggest_plus = 0
         bet_bookie = hedge_bookie = ''
+        p_name = m_name = ''
         largest_minus = -99999
+        # check to see if there are even any bookmakers
         if len(event['bookmakers']) == 0:
             continue
+
+        # now, check each bookmaker
         for bookie in event['bookmakers']:
             for outcome in bookie['markets'][0]['outcomes']:
                 if outcome['price'] > 0: # underdog
                     if outcome['price'] > biggest_plus:
                         biggest_plus = outcome['price']
                         bet_bookie = bookie['title']
+                        p_name = outcome['name']
                 else:
                     if outcome['price'] > largest_minus:
                         largest_minus = outcome['price']
                         hedge_bookie = bookie['title']
-        to_append = {'bonus_bet': [bet_bookie, biggest_plus], 'hedge_bet': [hedge_bookie, largest_minus]}
+                        m_name = outcome['name']
+        to_append = {'bonus_bet': [bet_bookie, biggest_plus, p_name], 'hedge_bet': [hedge_bookie, largest_minus, m_name]}
         to_append['title'] = event["away_team"] + " @ " + event["home_team"]
+
+        # try to add the type of event, ie market
+        try:
+            val = event['bookmakers'][0]['markets'][0]['key']
+            to_append['market'] = 'Moneyline' if val == 'h2h' else val
+        except Exception as e:
+            print(e)
+
         bets.append(to_append)
     return bets
 
@@ -60,9 +75,11 @@ def bonus_bet_calc(bets):
         
 
         hedge_index = (odd_b - 1) / odd_h
-        bonus_bet = {'bonus_bet': [bet['bonus_bet'][0], plus], 'hedge_bet': [bet['hedge_bet'][0], minus, hedge_index]}
+        bet['hedge_bet'].append(hedge_index)
+        bonus_bet = {'bonus_bet': bet['bonus_bet'], 'hedge_bet': bet['hedge_bet']}
         bonus_bet['profit_index'] = profit_idx
         bonus_bet['title'] = bet['title']
+        bonus_bet['market'] = bet['market']
 
         bonus_bets.append(bonus_bet)
     return bonus_bets
