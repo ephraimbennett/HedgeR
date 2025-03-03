@@ -33,7 +33,7 @@
             <button class="hamburger-menu" onclick="toggleMenu()">☰</button>
             <p>Email: <span id="user-email">{{ request.user.email }}</span></p>
             <p>Potential Profit: $<span id="potential-profit">{{ potential_profit }}</span></p>
-            <p>State: <span id="user-state"> {{settings.state}}</span></p>
+            <p>State: <span id="user-state"> {{settings.state.name}}</span></p>
         </div>
         {% block main %}
         <!-- Grid of Betting Options -->

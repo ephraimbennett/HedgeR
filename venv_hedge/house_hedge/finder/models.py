@@ -2,9 +2,19 @@ from django.db import models
 from home.models import Member
 
 # Create your models here.
+
+
+class State(models.Model):
+    code = models.CharField(max_length=2, unique=True)
+    name = models.CharField(max_length=100)
+    timezone = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
 class Settings(models.Model):
     user = models.OneToOneField(Member, on_delete=models.CASCADE) # The link to member
-    state = models.CharField(max_length=2, null=False, default="XX")
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
 
 class BonusBet(models.Model):
     title = models.TextField(null=True)
