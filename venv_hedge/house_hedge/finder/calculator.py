@@ -71,8 +71,6 @@ def bonus_bet_calc(bets):
         odd_b = 1 + plus / 100
         odd_h = 1 + (100 / abs(minus))
         profit_idx = (odd_b - 1) * ((odd_h - 1) / odd_h)
-        print(odd_b, odd_h)
-        
 
         hedge_index = (odd_b - 1) / odd_h
         bet['hedge_bet'].append(hedge_index)
@@ -105,9 +103,9 @@ def second_chance_calc(bets):
         implied_h = minus / (minus + 100)
         diff = 1 - (implied_b + implied_h)
 
-        second_bet = {'bonus_bet': [bet['bonus_bet'][0], plus], 'hedge_bet': [bet['hedge_bet'][0], minus]}
+        second_bet = {'bonus_bet': bet['bonus_bet'], 'hedge_bet': bet['hedge_bet']}
         second_bet['profit_index'] = diff
         second_bet['title'] = bet['title']
-        
+        second_bet['market'] = bet['market']
         second_bets.append(second_bet)
     return second_bets

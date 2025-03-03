@@ -22,7 +22,7 @@ def update_bets():
     # get main lines
     domain = "https://api.the-odds-api.com/v4/sports/"
     keys = ["baseball_ncaa", "basketball_nba", "basketball_wncaab"]
-    markets = ["h2h"]
+    markets = ["h2h", "totals", "spreads"]
     data = []
     for market in markets:
         for key in keys:
@@ -55,7 +55,10 @@ def update_bets():
         bet_model = SecondBet(title=bet['title'], bonus_bet=bet['bonus_bet'][0], hedge_bet=bet['hedge_bet'][0])
         bet_model.bonus_odds = bet['bonus_bet'][1]
         bet_model.hedge_odds = bet['hedge_bet'][1]
+        bet_model.bonus_name = bet['bonus_bet'][2]
+        bet_model.hedge_name = bet['hedge_bet'][2]
         bet_model.profit_index = bet['profit_index']
+        bet_model.market = bet['market']
         bet_model.save()
 
     for b in bookmakers:
