@@ -1,5 +1,10 @@
 from .models import BonusBet, SecondBet, BookMaker
 from .calculator import calculate_all
+from datetime import timezone
+
+
+
+from django.utils.dateparse import parse_datetime
 
 import requests
 
@@ -21,7 +26,8 @@ def update_bets():
 
     # get main lines
     domain = "https://api.the-odds-api.com/v4/sports/"
-    keys = ["baseball_ncaa", "basketball_nba", "basketball_wncaab"]
+    keys =  ["basketball_nba", "baseball_ncaa", "basketball_ncaab", "basketball_wncaab", "boxing_boxing",
+             "icehockey_nhl"]
     markets = ["h2h", "totals", "spreads"]
     data = []
     for market in markets:
@@ -34,6 +40,7 @@ def update_bets():
     # have a set of the names of bookmakers, as we go through the bets, add to this set.
     bookmakers = set()
 
+    print(len(bets))
     for bet in bets:
         bookmakers.add(bet['bonus_bet'][0])
         bookmakers.add(bet['hedge_bet'][0])
@@ -46,6 +53,9 @@ def update_bets():
         bet_model.hedge_name = bet['hedge_bet'][2]
         bet_model.bonus_name = bet['bonus_bet'][2]
         bet_model.market = bet['market']
+        bet_model.sport = bet['sport']
+        bet_model.time = bet['time']
+
         bet_model.save()
 
     for bet in second_bets:
@@ -59,6 +69,9 @@ def update_bets():
         bet_model.hedge_name = bet['hedge_bet'][2]
         bet_model.profit_index = bet['profit_index']
         bet_model.market = bet['market']
+        bet_model.sport = bet['sport']
+        bet_model.time = bet['time']
+
         bet_model.save()
 
     for b in bookmakers:

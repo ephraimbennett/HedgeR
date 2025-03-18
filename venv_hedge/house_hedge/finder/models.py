@@ -19,6 +19,8 @@ class Settings(models.Model):
 class BonusBet(models.Model):
     title = models.TextField(null=True)
     market = models.TextField(null=True)
+    time = models.TextField(null=True)
+    sport = models.TextField(null=True)
 
     # the bonus bet
     bonus_bet = models.TextField(null=True)
@@ -35,6 +37,8 @@ class BonusBet(models.Model):
 class SecondBet(models.Model):
     title = models.TextField(null=True)
     market = models.TextField(null=True)
+    time = models.TextField(null=True)
+    sport = models.TextField(null=True)
 
     # the bonus bet
     bonus_bet = models.TextField(null=True)

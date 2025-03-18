@@ -26,6 +26,10 @@ def find_best_bets(data):
         # now, check each bookmaker
         for bookie in event['bookmakers']:
             for outcome in bookie['markets'][0]['outcomes']:
+                # eliminate draws from the outcomes
+                if outcome['name'].lower() == 'draw':
+                    continue
+
                 if outcome['price'] > 0: # underdog
                     if outcome['price'] > biggest_plus:
                         biggest_plus = outcome['price']
@@ -38,6 +42,8 @@ def find_best_bets(data):
                         m_name = outcome['name']
         to_append = {'bonus_bet': [bet_bookie, biggest_plus, p_name], 'hedge_bet': [hedge_bookie, largest_minus, m_name]}
         to_append['title'] = event["away_team"] + " @ " + event["home_team"]
+        to_append['time'] = event['commence_time']
+        to_append['sport'] = event['sport_title']
 
         # try to add the type of event, ie market
         try:
@@ -78,6 +84,8 @@ def bonus_bet_calc(bets):
         bonus_bet['profit_index'] = profit_idx
         bonus_bet['title'] = bet['title']
         bonus_bet['market'] = bet['market']
+        bonus_bet['time'] = bet['time']
+        bonus_bet['sport'] = bet['sport']
 
         bonus_bets.append(bonus_bet)
     return bonus_bets
@@ -107,5 +115,7 @@ def second_chance_calc(bets):
         second_bet['profit_index'] = diff
         second_bet['title'] = bet['title']
         second_bet['market'] = bet['market']
+        second_bet['time'] = bet['time']
+        second_bet['sport'] = bet['sport']
         second_bets.append(second_bet)
     return second_bets

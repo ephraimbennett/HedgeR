@@ -52,7 +52,7 @@
 
 .bonus-bets-table th, 
 .bonus-bets-table td {
-    padding: 15px;  /* Increased padding for more row height */
+    padding: 13px;  /* Increased padding for more row height */
     border-bottom: 1px solid #444;
     text-align: left;
     white-space: normal; /* Allow text wrapping */

@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th>Event</th>
-                    <th>Time</th>
+                    <th>Time ( {{ settings.state.timezone }})</th>
                     <th>Bonus Bet</th>
                     <th>Hedge Bet</th>
                     <th>Profit</th>
@@ -44,9 +44,10 @@
                 <tr>
                     <td>
                         <span>{{ bet.title }}</span> <br>
-                        <span>{{ bet.market }}</span>
+                        <span>{{ bet.market }}</span> <br>
+                        <span>{{ bet.sport }}</span>
                     </td>
-                    <td>Not Available</td>
+                    <td>{{ bet.time }}</td>
                     <td>
                         <span>{{ bet.bonus_bet }} +{{ bet.bonus_odds }}</span> <br>
                         <span>{{ bet.bonus_name }}</span>

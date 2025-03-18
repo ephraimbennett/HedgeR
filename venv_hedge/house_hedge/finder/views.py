@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Settings, BonusBet, SecondBet, BookMaker
 from .services import update_bets
-
+from django.utils import timezone
+from datetime import datetime, timedelta
+import pytz
 
 from .forms import SettingsForm
 
@@ -47,7 +49,19 @@ def bonus_bets(request):
             bets = BonusBet.objects.filter(bonus_bet__contains=bm).order_by("-profit_index")[:int(request.GET.get('limit'))]
         else:
             bets = BonusBet.objects.all().order_by("-profit_index")[:int(request.GET.get('limit'))]
+        print(len(bets))
         for bet in bets:
+
+            time_adj = bet.time.replace("Z", "+0000")
+            dt_utc = datetime.strptime(time_adj, "%Y-%m-%dT%H:%M:%S%z")
+            local_time = dt_utc.astimezone(pytz.timezone(user_settings.state.timezone))
+            # Parse the timestamp into a datetime object
+            dt = datetime.fromisoformat(str(local_time))
+            # Format the datetime object into the desired string
+            formatted_time = dt.strftime("%B %d, %Y %I:%M %p")
+            bet.time = formatted_time
+
+
             bet.profit_index *= float(bonus_size)
             bet.hedge_index *= float(bonus_size)
 
@@ -72,13 +86,21 @@ def second_chance(request):
         r = float(request.GET.get('return')) / 100.0
         # grab the bookmaker
         bm = request.GET.get('bookmaker')
-        print(bm.title)
 
         # we want to grab the first 500 bets, because we don't know how profitable they really are yet. 
         bets = SecondBet.objects.all().filter(bonus_bet__contains=bm).order_by("-profit_index")[:500]
         bet_list = []
         for bet in bets:
             print(bet.profit_index)
+
+            time_adj = bet.time.replace("Z", "+0000")
+            dt_utc = datetime.strptime(time_adj, "%Y-%m-%dT%H:%M:%S%z")
+            local_time = dt_utc.astimezone(pytz.timezone(user_settings.state.timezone))
+            # Parse the timestamp into a datetime object
+            dt = datetime.fromisoformat(str(local_time))
+            # Format the datetime object into the desired string
+            formatted_time = dt.strftime("%B %d, %Y %I:%M %p")
+            bet.time = formatted_time
 
 
             # H = (Ob * S - S * r) / Oh,
