@@ -109,3 +109,66 @@ body {
     border: none;
     cursor: pointer;
 }
+
+/* Promotions Board */
+.promos-board {
+    margin-top: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Individual Promo Item */
+.promo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+/* Sportsbook Name */
+.promo-name {
+    font-weight: bold;
+    color: #4CAF50; /* Green for branding */
+    flex: 1;
+}
+
+/* Promotion Description */
+.promo-description {
+    flex: 3;
+    text-align: center;
+}
+
+/* Promo Button */
+.promo-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.promo-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Promotions Header */
+.promos-header {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: white;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}

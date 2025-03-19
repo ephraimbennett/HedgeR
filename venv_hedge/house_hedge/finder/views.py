@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Settings, BonusBet, SecondBet, BookMaker
-from .services import update_bets
+from .models import Settings, BonusBet, SecondBet, BookMaker, Promo
+from .services import update_bets, update_promos
 from django.utils import timezone
 from datetime import datetime, timedelta
 import pytz
@@ -15,11 +15,15 @@ from .forms import SettingsForm
 def dashboard(request):
     
     user_settings, created = Settings.objects.get_or_create(user=request.user)
-    print(user_settings)
+    
+    #update_promos()
+    promos = Promo.objects.all()
+
 
     return render(request, "dashboard.html", {
         'potential_profit': 2400,
-        'settings': user_settings
+        'settings': user_settings,
+        'promos': promos
     })
 
 @login_required

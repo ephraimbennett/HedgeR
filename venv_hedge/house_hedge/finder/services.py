@@ -1,10 +1,12 @@
-from .models import BonusBet, SecondBet, BookMaker
+from .models import BonusBet, SecondBet, BookMaker, Promo
 from .calculator import calculate_all
 from datetime import timezone
 
 
 
 from django.utils.dateparse import parse_datetime
+
+from .scrape.sportsbookreview import scrape_sportsbookreview
 
 import requests
 
@@ -77,3 +79,18 @@ def update_bets():
     for b in bookmakers:
         book_model = BookMaker(title=b)
         book_model.save()
+
+def update_promos():
+    # clear existing promos
+    Promo.objects.all().delete()
+
+    url = "https://www.sportsbookreview.com/bonuses/"
+    promos = scrape_sportsbookreview(url)
+
+    for promo in promos:
+        model = Promo(bookmaker=promo[0], description=promo[1], code=promo[2])
+        if len(promo) == 4:
+            model.url = promo[3]
+        else:
+            model.url = '/'
+        model.save()

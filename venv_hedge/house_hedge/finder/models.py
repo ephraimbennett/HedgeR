@@ -55,3 +55,9 @@ class SecondBet(models.Model):
 
 class BookMaker(models.Model):
     title = models.TextField()
+
+class Promo(models.Model):
+    bookmaker = models.TextField()
+    description = models.TextField(null=True)
+    code = models.CharField(max_length=50, null=True)
+    url = models.CharField(max_length=250, null=True)

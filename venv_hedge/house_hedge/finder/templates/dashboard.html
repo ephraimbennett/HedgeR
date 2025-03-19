@@ -18,6 +18,7 @@
     <div class="side-menu">
         <button class="close-menu" onclick="toggleMenu()">✖</button>
         <a href="/settings">⚙️ Settings</a>
+        <a href="/dashboard">Dashboard</a>
         <a href="/">Profit Boost</a>
         <a href="/bonus_bets">Bonus Bet</a>
         <a href="/">Site Credit</a>
@@ -44,6 +45,20 @@
             <button onclick="window.location.href='/second_chance'">Second Chance Bet</button>
             <button onclick="window.location.href='/'">Qualifying Bet</button>
             <button onclick="window.location.href='/'">Arbitrage</button>
+        </div>
+
+        <div class="promos-board">
+            <h2 class="promos-header">Promotions Available</h2>  <!-- New Header -->
+            {% for promo in promos %}
+            <div class="promo-item">
+                <span class="promo-name">{{ promo.bookmaker }}</span>
+                <span class="promo-description">
+                    {{ promo.description }} <br>
+                    {{ promo.code }}
+                </span>
+                <button class="promo-button" onclick="window.location.href='{{ promo.url }}'">Claim Offer</button>
+            </div>
+            {% endfor %}
         </div>
         {% endblock %}
     </div>
