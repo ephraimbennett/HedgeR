@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'finder',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,11 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'house_hedge.wsgi.application'
+
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'  # optional but useful
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
 # Database
@@ -130,3 +136,4 @@ AUTH_USER_MODEL = "home.Member"
 
 # set the login url (for accessing restricted pages when not logged in)
 LOGIN_URL = '/login'
+

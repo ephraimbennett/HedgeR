@@ -79,6 +79,7 @@ def update_bets():
     for b in bookmakers:
         book_model = BookMaker(title=b)
         book_model.save()
+    print("All bets have been updated.")
 
 def update_promos():
     # clear existing promos
@@ -94,3 +95,6 @@ def update_promos():
         else:
             model.url = '/'
         model.save()
+
+def print_smg():
+    print("SMGSMGSMG\n\nSMHG\nde")

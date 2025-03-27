@@ -18,6 +18,7 @@ def dashboard(request):
     
     #update_promos()
     promos = Promo.objects.all()
+    print("hhheey")
 
 
     return render(request, "dashboard.html", {
@@ -46,7 +47,7 @@ def bonus_bets(request):
 
     bonus_size = request.GET.get('amount')
     if bonus_size is not None:
-        update_bets()
+        #update_bets()
 
         bm = request.GET.get('bookmaker')
         if bm != 'Any':
